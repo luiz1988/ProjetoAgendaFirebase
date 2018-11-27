@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -15,13 +17,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
+import java.util.List;
+
 import br.edu.ifspsaocarlos.agendafirebase.model.Contato;
 import br.edu.ifspsaocarlos.agendafirebase.R;
 
 
 public class DetalheActivity extends AppCompatActivity {
     private Contato c;
-
+    private Spinner spinnerContato;
     private DatabaseReference databaseReference;
     String FirebaseID;
 
@@ -33,6 +38,14 @@ public class DetalheActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setSupportActionBar(toolbar);
+        spinnerContato = findViewById(R.id.spinnerTipoContato);
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        final List<String> categorias = Arrays.asList("", "Amigo", "Família", "Trabalho", "Outro");
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categorias);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerContato.setAdapter(dataAdapter);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -59,6 +72,7 @@ public class DetalheActivity extends AppCompatActivity {
                         EditText emailText = (EditText) findViewById(R.id.editTextEmail);
                         emailText.setText(c.getEmail());
 
+                        spinnerContato.setSelection(Integer.valueOf(c.getTipoContato()));
                     }
                 }
 
@@ -113,6 +127,7 @@ public class DetalheActivity extends AppCompatActivity {
         String name = ((EditText) findViewById(R.id.editTextNome)).getText().toString();
         String fone = ((EditText) findViewById(R.id.editTextFone)).getText().toString();
         String email = ((EditText) findViewById(R.id.editTextEmail)).getText().toString();
+        Integer tipoContato = spinnerContato.getSelectedItemPosition();
 
         if (c==null) {
             c = new Contato();
@@ -120,6 +135,7 @@ public class DetalheActivity extends AppCompatActivity {
             c.setNome(name);
             c.setFone(fone);
             c.setEmail(email);
+            c.setTipoContato(tipoContato.toString());
             databaseReference.push().setValue(c);
 
         }
@@ -128,7 +144,7 @@ public class DetalheActivity extends AppCompatActivity {
             c.setNome(name);
             c.setFone(fone);
             c.setEmail(email);
-
+            c.setTipoContato(tipoContato.toString());
             databaseReference.child(FirebaseID).setValue(c);
 
 
