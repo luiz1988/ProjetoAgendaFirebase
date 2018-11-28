@@ -20,7 +20,6 @@
     <string name="outros">Outros</string>
     <string name="filtrar">Filtrar</string>
     <string-array name="tipoContatos">
-        <item></item>
         <item>Amigo</item>
         <item>Família</item>
         <item>Trabalho</item>

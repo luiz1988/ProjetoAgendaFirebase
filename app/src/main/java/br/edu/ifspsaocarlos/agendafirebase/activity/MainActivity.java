@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.pesqContato).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.ordenarContato).getActionView();
 
         ImageView closeButton = (ImageView)searchView.findViewById(R.id.search_close_btn);
 
@@ -213,14 +213,16 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-    private void updateUI(String nomeContato, String categoria)
+    private void updateUI(String nomeContato, String tipoContato)
     {
-        if (nomeContato==null) {
-            if (nomeContato == null && categoria == null) {
+        if (nomeContato==null){
+            if (tipoContato != null && nomeContato == null) {
+                query = databaseReference.orderByChild("tipoContato").equalTo(tipoContato);
+            }
+            else if (nomeContato == null && tipoContato == null) {
                 query = databaseReference.orderByChild("nome");
-            } else if (categoria != null && nomeContato == null) {
-                query = databaseReference.orderByChild("tipoContato").equalTo(categoria);
-            } else {
+            }
+            else {
                 query = databaseReference.orderByChild("nome").startAt(nomeContato);
             }
             options = new FirebaseRecyclerOptions.Builder<Contato>().setQuery(query, Contato.class).build();

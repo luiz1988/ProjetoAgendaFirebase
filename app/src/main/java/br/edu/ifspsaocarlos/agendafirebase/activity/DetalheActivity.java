@@ -34,19 +34,11 @@ public class DetalheActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhe);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         setSupportActionBar(toolbar);
         spinnerContato = findViewById(R.id.spinnerTipoContato);
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        final List<String> categorias = Arrays.asList("", "Amigo", "Família", "Trabalho", "Outro");
-
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categorias);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerContato.setAdapter(dataAdapter);
-
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         if (getIntent().hasExtra("FirebaseID")) {
